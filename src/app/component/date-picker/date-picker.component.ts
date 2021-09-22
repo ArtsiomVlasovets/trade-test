@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TradeInterface } from 'src/app/interfaces/trade.interface';
 import { ChartDataService } from 'src/app/services/chart-data.service';
-import { PriceValidator } from '../validators';
+import { CustomValidator } from '../validators';
 
 @Component({
   selector: 'app-date-picker',
@@ -24,7 +24,8 @@ export class DatePickerComponent implements OnInit {
       { type: 'validPrice', message: 'Price should be more then 0' }
     ],
     'exitDate': [
-      { type: 'required', message: 'Exit Date is required' }
+      { type: 'required', message: 'Exit Date is required' },
+      { type: 'validExitDate', message: 'Exit date should be more then entry' }
     ],
     'exitPrice': [
       { type: 'required', message: 'Exit Price is required' },
@@ -33,24 +34,31 @@ export class DatePickerComponent implements OnInit {
   };
 
   calculatedPrice: null | number = null;
+  entryDateControl: FormControl;
 
   constructor(
     private fb: FormBuilder,
     private chartDataService: ChartDataService
   ) {
+    this.entryDateControl = new FormControl('', Validators.required);
     this.tradeDataForm = this.fb.group({
-      entryDate: ['', Validators.required],
+      entryDate: this.entryDateControl,
       entryPrice: [0, {
         validators: Validators.compose([
           Validators.required,
-          PriceValidator.validPrice()
+          CustomValidator.validPrice()
         ])
       }],
-      exitDate: ['', Validators.required],
+      exitDate: ['', {
+        validators: Validators.compose([
+          Validators.required,
+          CustomValidator.validExitDate(this.entryDateControl)
+        ])
+      }],
       exitPrice: [0, {
         validators: Validators.compose([
           Validators.required,
-          PriceValidator.validPrice()
+          CustomValidator.validPrice()
         ])
       }],
     });

@@ -1,1 +1,1 @@
-export { PriceValidator } from './price.validator';
+export { CustomValidator } from './price.validator';

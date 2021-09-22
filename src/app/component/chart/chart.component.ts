@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { isEmpty } from 'lodash';
+import * as moment from 'moment';
 import { Color, Label } from 'ng2-charts';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { TradeInterface } from 'src/app/interfaces/trade.interface';
 
 @Component({
@@ -18,6 +19,8 @@ export class ChartComponent implements OnInit {
     exitPrice: null
 })
 
+  private unsubscribeAll!: Subject<any>;
+  public chartValue: TradeInterface | null = null;
   public doughnutChartData: any[] = [];
   public doughnutChartLabels: any[] = [];
   public doughnutChartOptions: Partial<(ChartOptions & { annotation: any })> = {
@@ -37,8 +40,14 @@ export class ChartComponent implements OnInit {
 
   ngOnInit() {
     this.tradeData$.subscribe((value: TradeInterface | null) => {
+      this.chartValue = value;
       this.setChartData(value)
     })
+  }
+
+  ngOnDestroy() {
+    this.unsubscribeAll.next();
+    this.unsubscribeAll.complete();
   }
 
   public isDataExist(value: TradeInterface | null): boolean {
@@ -51,7 +60,7 @@ export class ChartComponent implements OnInit {
       this.doughnutChartData = [
         { data: [value?.entryPrice, value?.exitPrice], label: 'Balance' },
       ];
-      this.doughnutChartLabels = [new Date(value?.entryDate as string), new Date(value?.exitDate as string)];
+      this.doughnutChartLabels = [moment(value?.entryDate).format("DD MMM YY"), moment(value?.exitDate).format("DD MMM YY") ];
     }
     console.log('this.doughnutChartData', this.doughnutChartData)
     console.log('this.doughnutChartLabels', this.doughnutChartLabels)
