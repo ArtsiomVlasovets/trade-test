@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { isEmpty } from 'lodash';
 import * as moment from 'moment';
@@ -16,14 +23,14 @@ export class ChartComponent implements OnInit {
     entryDate: '',
     entryPrice: null,
     exitDate: '',
-    exitPrice: null
-})
+    exitPrice: null,
+  });
 
   private unsubscribeAll!: Subject<any>;
   public chartValue: TradeInterface | null = null;
   public doughnutChartData: any[] = [];
   public doughnutChartLabels: any[] = [];
-  public doughnutChartOptions: Partial<(ChartOptions & { annotation: any })> = {
+  public doughnutChartOptions: Partial<ChartOptions & { annotation: any }> = {
     responsive: false,
   };
   public doughnutChartColors: Color[] = [
@@ -36,13 +43,13 @@ export class ChartComponent implements OnInit {
   public doughnutChartType: ChartType = 'doughnut';
   public doughnutChartPlugins = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.tradeData$.subscribe((value: TradeInterface | null) => {
       this.chartValue = value;
-      this.setChartData(value)
-    })
+      this.setChartData(value);
+    });
   }
 
   ngOnDestroy() {
@@ -55,14 +62,14 @@ export class ChartComponent implements OnInit {
   }
 
   public setChartData(value: TradeInterface | null) {
-    
-    if(this.isDataExist(value)) {
+    if (this.isDataExist(value)) {
       this.doughnutChartData = [
         { data: [value?.entryPrice, value?.exitPrice], label: 'Balance' },
       ];
-      this.doughnutChartLabels = [moment(value?.entryDate).format("DD MMM YY"), moment(value?.exitDate).format("DD MMM YY") ];
+      this.doughnutChartLabels = [
+        moment(value?.entryDate).format('DD MMM YY'),
+        moment(value?.exitDate).format('DD MMM YY'),
+      ];
     }
-    console.log('this.doughnutChartData', this.doughnutChartData)
-    console.log('this.doughnutChartLabels', this.doughnutChartLabels)
   }
 }
