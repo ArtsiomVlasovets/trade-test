@@ -1,0 +1,114 @@
+<h2 class="section-title">Calculation form</h2>
+<form
+  [formGroup]="tradeDataForm"
+  (ngSubmit)="onSubmitUserDetails(tradeDataForm.value)"
+>
+  <mat-form-field class="full-width">
+    <input
+      matInput
+      [matDatepicker]="entrypicker"
+      placeholder="Entry date"
+      formControlName="entryDate"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="entrypicker"></mat-datepicker-toggle>
+    <mat-datepicker #entrypicker></mat-datepicker>
+    <mat-error *ngFor="let validation of validationMessages.entryDate">
+      <mat-error
+        class="error-message"
+        *ngIf="
+          tradeDataForm.get('entryDate')?.hasError(validation.type) &&
+          (tradeDataForm.get('entryDate')?.dirty ||
+            tradeDataForm.get('entryDate')?.touched)
+        "
+        >{{ validation.message }}</mat-error
+      >
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="full-width col-8">
+    <input
+      matInput
+      placeholder="entryPrice"
+      type="number"
+      formControlName="entryPrice"
+      required
+    />
+    <mat-error *ngFor="let validation of validationMessages.entryPrice">
+      <mat-error
+        class="error-message"
+        class="error-message"
+        *ngIf="
+          tradeDataForm
+            ?.get('entryPrice')
+            ?.hasError(validation.type) &&
+          (tradeDataForm.get('entryPrice')?.dirty ||
+            tradeDataForm.get('entryPrice')?.touched)
+        "
+      >
+        {{ validation.message }}
+      </mat-error>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="full-width">
+    <input
+      matInput
+      [matDatepicker]="exitpicker"
+      placeholder="Exit date"
+      formControlName="exitDate"
+      required
+    />
+    <mat-datepicker-toggle matSuffix [for]="exitpicker"></mat-datepicker-toggle>
+    <mat-datepicker #exitpicker></mat-datepicker>
+    <mat-error *ngFor="let validation of validationMessages.exitDate">
+      <mat-error
+        class="error-message"
+        *ngIf="
+          tradeDataForm.get('exitDate')?.hasError(validation.type) &&
+          (tradeDataForm.get('exitDate')?.dirty ||
+            tradeDataForm.get('exitDate')?.touched)
+        "
+        >{{ validation.message }}</mat-error
+      >
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="full-width col-8">
+    <input
+      matInput
+      placeholder="exitPrice"
+      type="number"
+      formControlName="exitPrice"
+      required
+    />
+    <mat-error *ngFor="let validation of validationMessages.exitPrice">
+      <mat-error
+        class="error-message"
+        class="error-message"
+        *ngIf="
+          tradeDataForm
+            ?.get('exitPrice')
+            ?.hasError(validation.type) &&
+          (tradeDataForm.get('exitPrice')?.dirty ||
+            tradeDataForm.get('exitPrice')?.touched)
+        "
+      >
+        {{ validation.message }}
+      </mat-error>
+    </mat-error>
+  </mat-form-field>
+
+  <button class="submit-btn" color="primary" mat-raised-button type="submit" [disabled]="!tradeDataForm.valid">
+    Calculate
+  </button>
+</form>
+
+<ng-container *ngIf="calculatedPrice !== null">
+    <div class="price-wrapper">
+        <h2 class="section-title">Calculated price: </h2>
+        <span class="calculated-price">
+            {{calculatedPrice}}
+        </span>
+    </div>
+</ng-container>

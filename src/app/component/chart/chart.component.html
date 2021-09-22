@@ -1,0 +1,11 @@
+<div *ngIf="doughnutChartLabels.length > 0" style="display: block;">
+    <canvas baseChart width="400" height="400"
+      [datasets]="doughnutChartData"
+      [labels]="doughnutChartLabels"
+      [options]="doughnutChartOptions"
+      [legend]="doughnutChartLegend"
+      [chartType]="doughnutChartType"
+      [plugins]="doughnutChartPlugins">
+    </canvas>
+</div>
+  

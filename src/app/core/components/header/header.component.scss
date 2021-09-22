@@ -1,0 +1,33 @@
+.header {
+  margin-top: 45px;
+  margin-bottom: 45px;
+}
+.logo {
+  width: 80%;
+  height: auto;
+  margin-top: -8px;
+  cursor: pointer;
+}
+
+.mobile-header {
+  padding: 0;
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .mobile-header {
+    display: none;
+  }
+  .desktop-header {
+    display: block;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-header {
+    display: block;
+  }
+  .desktop-header {
+    display: none;
+  }
+}

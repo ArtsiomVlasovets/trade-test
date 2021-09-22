@@ -1,0 +1,10 @@
+
+<h2 class="title">Please fill your data</h2>
+<div class="trade-wrapper">
+    <div class="form-block">
+        <app-date-picker (calculateData)="calculateData($event)"></app-date-picker>
+    </div>
+    <div class="chart-block">
+        <app-chart [tradeData$]="tradeData$"></app-chart>
+    </div>
+</div>
